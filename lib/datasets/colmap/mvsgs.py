@@ -29,7 +29,8 @@ class Dataset:
     def build_metas(self):
         if len(self.scenes) == 0:
             ### set your own scenes
-            scenes = ['scene1', 'scene2']
+            #scenes = ['scene1', 'scene2']
+            scenes = ['Sample1']
         else:
             scenes = self.scenes
         self.scene_infos = {}
@@ -211,7 +212,7 @@ class Dataset:
 
     def read_image(self, scene, view_idx):
         image_path = os.path.join(self.data_root, scene['scene_name'], 'images', scene['image_names'][view_idx])
-        img = (np.array(imageio.imread(image_path))).astype(np.float32)
+        img = (np.array(imageio.imread(image_path))).astype(np.float32)[..., :3]
         orig_size = img.shape[:2][::-1]
         img = cv2.resize(img, self.input_h_w[::-1], interpolation=cv2.INTER_AREA)
         return np.array(img), orig_size

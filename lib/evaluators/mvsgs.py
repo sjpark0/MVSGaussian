@@ -70,7 +70,7 @@ class Evaluator:
                     self.psnrs.append(psnr_item)
                 self.scene_psnrs[batch['meta']['scene'][b]+f'_level{i}'].append(psnr_item)
 
-                ssim_item = ssim(gt_rgb[b], pred_rgb[b], multichannel=True)
+                ssim_item = ssim(gt_rgb[b], pred_rgb[b], channel_axis=-1, data_range=1.0, multichannel=True)
                 if i == cfg.mvsgs.cas_config.num-1:
                     self.ssims.append(ssim_item)
                 self.scene_ssims[batch['meta']['scene'][b]+f'_level{i}'].append(ssim_item)

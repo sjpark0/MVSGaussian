@@ -1,6 +1,6 @@
 task: mvsgs
 gpus: [0]
-exp_name: 'dtu_pretrain'
+exp_name: 'Sample1'
 
 
 # module

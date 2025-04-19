@@ -8,7 +8,8 @@ imgaug
 lpips
 tensorboardX
 ipdb
-scikit-image==0.19.0
-imageio==2.27.0
+scikit-image
+imageio
 imageio[ffmpeg]
 imageio[pyav]
+numpy==1.26.4
