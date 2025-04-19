@@ -1,7 +1,10 @@
 from . import samplers
 import torch
 import torch.utils.data
-import imp
+#import imp
+import importlib.util
+import sys
+
 import os
 from .collate_batch import make_collator
 import numpy as np
@@ -11,6 +14,16 @@ from torch.utils.data import DataLoader, ConcatDataset
 import cv2
 cv2.setNumThreads(1)
 
+#from lib.datasets.colmap.mvsgs import Dataset
+def load_dataset_class(module_name, file_path):
+    #spec = importlib.util.spec_from_file_location(module_name, file_path)
+    #module = importlib.util.module_from_spec(spec)
+    #sys.modules[module_name] = module
+    #spec.loader.exec_module(module)
+    #return module.Dataset
+    module = importlib.import_module(module_name) #윈도우에서 문제해결 250420
+    return module.Dataset
+    #return Dataset
 
 def _dataset_factory(is_train, is_val):
     if is_val:
@@ -22,7 +35,8 @@ def _dataset_factory(is_train, is_val):
     else:
         module = cfg.test_dataset_module
         path = cfg.test_dataset_path
-    dataset = imp.load_source(module, path).Dataset
+    #dataset = imp.load_source(module, path).Dataset
+    dataset = load_dataset_class(module, path)
     return dataset
 
 
@@ -35,8 +49,10 @@ def make_dataset(cfg, is_train=True):
         args = cfg.test_dataset
         module = cfg.test_dataset_module
         path = cfg.test_dataset_path
-    dataset = imp.load_source(module, path).Dataset
-    dataset = dataset(**args)
+    #dataset = imp.load_source(module, path).Dataset
+    #dataset = dataset(**args)
+    DatasetClass = load_dataset_class(module, path)
+    dataset = DatasetClass(**args)
     return dataset
 
 
@@ -77,6 +93,7 @@ def worker_init_fn(worker_id):
 
 
 def make_data_loader(cfg, is_train=True, is_distributed=False, max_iter=-1):
+    
     if is_train:
         batch_size = cfg.train.batch_size
         # shuffle = True
