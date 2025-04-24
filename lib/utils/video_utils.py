@@ -110,8 +110,35 @@ def get_spiral_render_path(c2ws_all, near_far, rads_scale=0.5, N_views=120):
     shrink_factor = .8
     zdelta = close_depth * .2
     tt = c2ws_all[:, :3, 3] - c2w[:3, 3][None]
+    
     rads = np.percentile(np.abs(tt), 70, 0)*rads_scale
     render_poses = render_path_spiral(c2w, up, rads, focal, zdelta, zrate=.5, N=N_views)
+    return np.stack(render_poses)
+
+def ptstocam(pts, c2w):
+    tt = np.matmul(c2w[:3,:3].T, (pts-c2w[:3,3])[...,np.newaxis])[...,0]
+    return tt
+
+def get_axis_render_path(c2ws_all, near_far, axis, focal, view_range, rads_scale=0.5, N_views=120):
+    # center pose
+    c2w = poses_avg(c2ws_all)
+
+    # Get average pose
+    up = normalize(c2ws_all[:, :3, 1].sum(0))
+
+    # Find a reasonable "focus depth" for this dataset
+    close_depth, inf_depth = near_far
+    # print(near_far)
+    dt = .90
+    mean_dz = 1./(((1.-dt)/close_depth + dt/inf_depth))
+    # print(focal)
+    # Get radii for spiral path
+    shrink_factor = .8
+    zdelta = close_depth * .2
+    tt = c2ws_all[:, :3, 3] - c2w[:3, 3][None]
+    #tt = ptstocam(c2ws_all[:3,3,:].T, c2w).T
+    rads = np.percentile(np.abs(tt), 90, -1)
+    render_poses = render_path_axis_param(c2w, up, axis, shrink_factor*rads[1], focal, view_range, N=N_views)
     return np.stack(render_poses)
 
 def poses_avg(poses):
@@ -144,6 +171,20 @@ def render_path_spiral(c2w, up, rads, focal, zdelta, zrate, N_rots=2, N=120):
     for theta in np.linspace(0., 2. * np.pi * N_rots, N+1)[:-1]:
         c = np.dot(c2w[:3, :4], np.array([np.cos(theta), -np.sin(theta), -np.sin(theta*zrate), 1.]) * rads)
         z = normalize(c - np.dot(c2w[:3, :4], np.array([0, 0, -focal, 1.])))
+        render_poses.append(viewmatrix(z, up, c))
+    return render_poses
+
+def render_path_axis_param(c2w, up, ax, rad, focal, view_range, N):
+    c2w = c2w[:3,:4]
+    render_poses = []
+    center = c2w[:,3]
+    #hwf = c2w[:,4:5]
+    v = c2w[:,ax] * rad
+    
+    for t in np.linspace(-view_range,view_range,N+1)[:-1]:
+        c = center + t * v
+        #z = normalize(c - (c - focal * c2w[:,2]))
+        z = normalize(c - (center - focal * c2w[:,2]))
         render_poses.append(viewmatrix(z, up, c))
     return render_poses
 # --------------------- End: Render scriptes for LLFF dataset video generation --------------------

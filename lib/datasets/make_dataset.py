@@ -2,6 +2,7 @@ from . import samplers
 import torch
 import torch.utils.data
 #import imp
+import importlib
 import importlib.util
 import sys
 
@@ -53,6 +54,7 @@ def make_dataset(cfg, is_train=True):
     #dataset = dataset(**args)
     DatasetClass = load_dataset_class(module, path)
     dataset = DatasetClass(**args)
+    
     return dataset
 
 

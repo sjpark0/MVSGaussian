@@ -417,7 +417,6 @@ def save_model(net, optim, scheduler, recorder, model_dir, epoch, custom=None, l
 def load_network(net, model_dir, resume=True, epoch=-1, strict=True):
     if not resume:
         return 0
-
     if not os.path.exists(model_dir):
         print(colored('pretrained model does not exist', 'red'))
         return 0
@@ -439,7 +438,6 @@ def load_network(net, model_dir, resume=True, epoch=-1, strict=True):
         model_path = os.path.join(model_dir, '{}.pth'.format(pth))
     else:
         model_path = model_dir
-
     print('load model: {}'.format(model_path))
     pretrained_model = torch.load(model_path)
     net.load_state_dict(pretrained_model['net'], strict=strict)

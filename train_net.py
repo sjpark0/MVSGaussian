@@ -16,6 +16,7 @@ if cfg.fix_random:
 
 
 def train(cfg, network):
+    #print(cfg.focal, cfg.range)
     train_loader = make_data_loader(cfg,
                                     is_train=True,
                                     is_distributed=cfg.distributed,
@@ -112,7 +113,8 @@ def test(cfg, network):
                          cfg.trained_model_dir,
                          resume=cfg.resume,
                          epoch=cfg.test.epoch)
-    trainer.val(epoch, val_loader, evaluator)
+    recorder = make_recorder(cfg)
+    trainer.val(epoch, val_loader, evaluator, recorder)
 
 def synchronize():
     """

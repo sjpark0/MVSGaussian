@@ -14,14 +14,14 @@ mvsgs:
 train_dataset:
     data_root: 'examples'
     split: 'train'
-    input_h_w: [640, 960]
+    input_h_w: [576, 960]
     input_ratio: 1.
     scene: ''
 
 test_dataset:
     data_root: 'examples'
     split: 'test'
-    input_h_w: [640, 960]
+    input_h_w: [576, 960]
     input_ratio: 1.
     scene: ''
 

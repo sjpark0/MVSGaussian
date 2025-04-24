@@ -56,6 +56,7 @@ def run_evaluate():
     evaluator = make_evaluator(cfg)
     net_time = []
     scenes = []
+    
     for batch in tqdm.tqdm(data_loader):
         for k in batch:
             if k != 'meta':
