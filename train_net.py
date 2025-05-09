@@ -76,18 +76,7 @@ def train(cfg, network):
                        optimizer,
                        scheduler,
                        recorder,
-                       cfg.trained_model_dir,
-                       epoch,
-                       custom='psnr_best')
-            if ssim > ssim_best:
-                ssim_best = ssim
-                save_model(network,
-                       optimizer,
-                       scheduler,
-                       recorder,
-                       cfg.trained_model_dir,
-                       epoch,
-                       custom='ssim_best')
+                       cfg.traipython train_net.py --cfg_file configs/mvsgs/sc_general.yamlssim_best')
             if lpips < lpips_best:
                 lpips_best = lpips
                 save_model(network,

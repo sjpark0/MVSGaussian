@@ -1,0 +1,1 @@
+python train_net.py --cfg_file configs/mvsgs/sc_general.yaml

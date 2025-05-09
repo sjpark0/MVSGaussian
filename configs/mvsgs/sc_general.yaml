@@ -1,6 +1,6 @@
 task: sc
 gpus: [0]
-exp_name: 'sc1'
+exp_name: 'sc_250502'
 
 
 # module
@@ -16,7 +16,7 @@ save_video: False
 save_ply: False
 dir_ply: 'sc_pointcloud'
 
-focal : 10
+focal : 100
 range : 1.0
 
 # task config
@@ -61,8 +61,8 @@ train_dataset:
     input_h_w: [576, 960]
     
     param : "Param"
-    scene_range : [1, 2297, 100]
-    #scene:  
+    scene_range : [1, 2298, 300]
+    #scene:  ["330"]
     #    - "817"
     #    - "1301"
     #    - "2111"
@@ -77,8 +77,8 @@ test_dataset:
     #input_h_w: [1088, 1920]
     input_h_w: [576, 960]
     param : "Param"
-    scene_range : [1, 2297, 100]
-    
+    scene_range : [1, 2298, 1]
+    #scene_range : [1, 2298, 300]
     #scene: 
     #    - "817"
     #    - "1301"

@@ -1,0 +1,1 @@
+python run.py --type evaluate --cfg_file configs/mvsgs/sc_general.yaml save_video True focal 50 range 1.0
