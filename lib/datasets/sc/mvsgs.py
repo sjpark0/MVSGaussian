@@ -102,14 +102,13 @@ class Dataset:
                 self.scenes = kwargs['scene']
             else:
                 self.scenes = [kwargs['scene']]
-        #    self.scenes = [kwargs['scene']]
         else:
             self.scenes = []
-        
-        if 'scene_range' in kwargs and kwargs['scene_range']:
+        if 'scene_range' in kwargs and kwargs['scene_range']:            
             self.scenes = list(map(str, range(kwargs['scene_range'][0], kwargs['scene_range'][1], kwargs['scene_range'][2])))
         else:
             self.scenes = []
+        
         if 'param' in kwargs and kwargs['param']:           
             self.param = kwargs['param']
         else:
@@ -292,7 +291,7 @@ class Dataset:
             
         R = np.array(tar_ext[:3, :3], np.float32).reshape(3, 3).transpose(1, 0)
         T = np.array(tar_ext[:3, 3], np.float32)
-        for i in range(cfg.mvsgs.cas_config.num):
+        for i in range(cfg.mvsgs.cas_config.num):video_path
             h, w = H*cfg.mvsgs.cas_config.render_scale[i], W*cfg.mvsgs.cas_config.render_scale[i]
             tar_ixt_ = tar_ixt.copy()
             tar_ixt_[:2,:] *= cfg.mvsgs.cas_config.render_scale[i]
